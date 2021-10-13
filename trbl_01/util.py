@@ -2,7 +2,7 @@ from random import randint
 
 def randomList(qtt = 0, repeat = False, start = 0, end = 0):
     numbers = []
-    while len(numbers) < qtd:
+    while len(numbers) < qtt:
         number = randint(start, end)
         if not repeat:
             if number not in numbers:

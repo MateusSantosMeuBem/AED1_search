@@ -1,4 +1,4 @@
-import time
+import timeit
 from util import *
 
 def quick_sort(a, ini=0, fim=None):
@@ -25,10 +25,23 @@ def particao(a, ini, fim):
             a[i], a[ini - 1] = a[ini - 1], a[i]
     return ini - 1
 
+values = [100, 1000, 100000, 1000000]
+header = f'|Qtd.|Tempo 1|Tempo 2|Tempo 3|Tempo medio|\n|--|--|--|--|--|\n'
+with open("quick_sort.md", "w") as f:
+    f.write(header) 
+    for v in values:
+        avg = 0
+        line = f'|{v}|'
+        for i in range(3):
+            print(f'Criando a {i+1}ª lista de {v} valores...')
+            a = randomList(v, True, 0, v)
+            print(f'Ordenando a {i+1}ª lista de {v} valores...')
+            start = timeit.default_timer()
+            list_sorted = quick_sort(a)
+            end = timeit.default_timer()
+            line += f'{(end - start):.8f}s|'
+            avg += float(f'{(end - start):.8f}')
+        avg /= 3
+        line += f'{avg:.8f}s|\n'
 
-start = time.time_ns()
-a = randomList(4, False, 0, 2)
-end = time.time_ns()
-print(a)
-print(quick_sort(a))
-print(start, end)
+        f.write(line) 
