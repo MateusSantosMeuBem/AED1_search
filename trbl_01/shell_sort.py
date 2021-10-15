@@ -17,19 +17,19 @@ def ShellSort(nums):
         h = int(h / 2.2)
     return nums
 #função para criar uma lista aleatoria, com os parametros:quantidade de itens na lista;se pode repetir os numeros;de onde começa;de onde termina.
-values = [100, 1000,100000,1000000]
+values = [200000]
 header = f'|Qtd.|Tempo 1|Tempo 2|Tempo 3|Tempo Medio|\n|--|--|--|--|--|\n'
-with open('shell_sort.md','w') as f:
+with open('shell_sort_200k.md','w') as f:
     f.write(header)
     for v in values:
         avg = 0
         line = f'|{v}|'
-        for i in range(3):
+        for i in range(1):
             print(f'Criando a {i + 1}ª lista de {v} valores')
-            num = randomList(100,False,0,100)
+            num = randomList(v, True, 0, v)
             print(f'Ordenando a {i + 1}ª lista de {v} valores')
             start = timeit.default_timer()
-            ShellSort(num)
+            my_list = ShellSort(num)
             end = timeit.default_timer()
             line += f'{(end - start):.8f}s|'
             avg += float(f'{(end - start):.8f}')

@@ -1,33 +1,32 @@
 import timeit
 from util import *
 
-def quick_sort(a, ini=0, fim=None):
-    fim = fim if fim is not None else len(a)
-    if ini < fim:
-        pp = particao(a, ini, fim)
-        quick_sort(a, ini, pp)
-        quick_sort(a, pp + 1, fim)
-    return a
+def quicksort(lista, inicio=0, fim=None):
+    if fim is None:
+        fim = len(lista)-1
+    if inicio < fim:
+        p = partition(lista, inicio, fim)
+        # recursivamente na sublista à esquerda (menores)
+        quicksort(lista, inicio, p-1)
+        # recursivamente na sublista à direita (maiores)
+        quicksort(lista, p+1, fim)
 
-def particao(a, ini, fim):
-    # para uma versão com partição aleatória
-    # descomente as próximas três linhas:
-    # from random import randrange
-    # rand = randrange(ini, fim)
-    # a[rand], a[fim - 1] = a[fim - 1], a[rand]
-    pivo = a[fim - 1]
-    for i in range(ini, fim):
-        if a[i] > pivo:
-            fim += 1
-        else:
-            fim += 1
-            ini += 1
-            a[i], a[ini - 1] = a[ini - 1], a[i]
-    return ini - 1
+def partition(lista, inicio, fim):
+    pivot = lista[fim]
+    i = inicio
+    for j in range(inicio, fim):
+        # j sempre avança, pois representa o elementa em análise
+        # e delimita os elementos maiores que o pivô
+        if lista[j] <= pivot:
+            lista[j], lista[i] = lista[i], lista[j]
+            # incrementa-se o limite dos elementos menores que o pivô
+            i = i + 1
+    lista[i], lista[fim] = lista[fim], lista[i]
+    return i
 
-values = [100, 1000, 100000, 1000000]
+values = [12]
 header = f'|Qtd.|Tempo 1|Tempo 2|Tempo 3|Tempo medio|\n|--|--|--|--|--|\n'
-with open("quick_sort.md", "w") as f:
+with open("test.md", "w") as f:
     f.write(header) 
     for v in values:
         avg = 0
@@ -36,9 +35,11 @@ with open("quick_sort.md", "w") as f:
             print(f'Criando a {i+1}ª lista de {v} valores...')
             a = randomList(v, True, 0, v)
             print(f'Ordenando a {i+1}ª lista de {v} valores...')
+            print(a)
             start = timeit.default_timer()
-            list_sorted = quick_sort(a)
+            quicksort(a)
             end = timeit.default_timer()
+            print(a)
             line += f'{(end - start):.8f}s|'
             avg += float(f'{(end - start):.8f}')
         avg /= 3
